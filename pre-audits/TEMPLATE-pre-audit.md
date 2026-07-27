@@ -5,7 +5,7 @@
 - **Version de l'outil** (tag ou commit git) :
 - **Changement testé** (un seul) :
 - **Hypothèse** (pourquoi ce changement devrait améliorer les chiffres) :
-- **Pages testées** (dossier `pages-test/` du) :
+- **Pages testées** (dossier `pages-test/AAAA-MM/` utilisé) :
 - **Nombre de passages** : (2 minimum ; si les passages divergent fortement, le noter en commentaire)
 
 ## Résultats par page
@@ -53,6 +53,6 @@ Deux questions, dans cet ordre :
 - [ ] **Gardé** — hypothèse vérifiée, pas de dégradation rédhibitoire ailleurs
 - [ ] **Annulé** — hypothèse non vérifiée, ou dégradation trop forte ailleurs : retour à la version précédente
 
-Reporter la ligne dans `../journal-iterations.csv` (la colonne précision s'y calcule : vraies erreurs ÷ erreurs remontées, dans l'exemple 4 ÷ 6 = 67 %).
+Reporter la ligne dans `../journal-iterations.csv` (précision = vraies erreurs ÷ erreurs remontées, dans l'exemple 4 ÷ 6 = 67 %).
 
 **Commentaire** (ce qu'on a appris, prochaine hypothèse) :

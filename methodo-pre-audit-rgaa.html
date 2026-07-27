@@ -182,7 +182,7 @@
         <span class="arr">→</span>
         <span class="node">Lancer l'outil sur les pages de test<small>deux fois, pour vérifier la stabilité</small></span>
         <span class="arr">→</span>
-        <span class="node">Comparer à la liste des erreurs<small>chiffres calculés automatiquement</small></span>
+        <span class="node">Comparer à la liste des erreurs<small>les quatre chiffres du compte rendu</small></span>
         <span class="arr">→</span>
         <span class="node">Garder ou annuler<small>une ligne au journal</small></span>
       </div>
@@ -219,11 +219,6 @@ sévérité: majeure               validé: experte, 21/07</code></pre>
       <div class="livrable"><b>Livrable</b>le fichier <code>criteres-couverts.md</code> — c'est aussi l'argumentaire honnête de l'outil : « pré-audit couvrant X critères sur 106 ».</div>
     </section>
 
-    <section class="step">
-      <h2><span class="step-no">A4</span>Optionnel — un point de comparaison avec axe-core</h2>
-      <p>Étape facultative, à faire seulement si la mise en place est simple : la référence de la démarche reste la liste de l'experte, pas axe-core.</p>
-      <p>L'idée : lancer <a href="https://github.com/dequelabs/axe-core">axe-core</a> (outil gratuit, aux résultats toujours identiques) sur les pages de test et noter son score contre la liste des erreurs. Il est construit sur les WCAG, mais ses règles portent la correspondance officielle avec le RGAA 4 (le RGAA est la déclinaison française des WCAG 2.1) : chaque erreur sort étiquetée du critère RGAA correspondant, par exemple <code>color-contrast</code> → critère 3.2. Intérêt : si l'IA fait moins bien qu'un outil classique gratuit sur les critères qu'il sait vérifier, ça interroge l'architecture. Mais la boucle de la partie B fonctionne très bien sans.</p>
-    </section>
   </div>
 
   <!-- ============ PARTIE B ============ -->
@@ -288,7 +283,7 @@ sévérité: majeure               validé: experte, 21/07</code></pre>
         <li><strong>Fausses alertes</strong> : nombre d'erreurs remontées qui n'en sont pas.</li>
         <li><strong>Erreurs manquées</strong> : nombre d'erreurs de la liste de l'experte que l'IA n'a pas vues. Indispensable : sans lui, un outil qui ne remonte presque rien paraîtrait parfait.</li>
       </ul>
-      <p>Au total du pré-audit, un chiffre calculé pour le journal : la <strong>précision</strong> = vraies erreurs ÷ erreurs remontées.</p>
+      <p>Au total du pré-audit, un chiffre de plus pour le journal : la <strong>précision</strong> = vraies erreurs ÷ erreurs remontées.</p>
       <p>Et sur l'ensemble des pages : les mêmes chiffres <strong>ventilés par critère RGAA</strong>, pour voir sur quels critères l'outil se trompe.</p>
       <div class="example">
         <p class="label">Exemple chiffré (fictif) — la liste de référence compte 20 erreurs, l'IA en signale 18</p>
@@ -343,7 +338,6 @@ sévérité: majeure               validé: experte, 21/07</code></pre>
       <li>Liste des vraies erreurs remplie et validée par l'experte (<code>erreurs-reference.csv</code>)</li>
       <li>Liste des critères RGAA couverts, écrite (<code>criteres-couverts.md</code>)</li>
       <li>Journal d'itérations créé (<code>journal-iterations.csv</code>)</li>
-      <li>Optionnel : score axe-core mesuré en point de comparaison</li>
       <li>Seuils cibles validés avec l'experte</li>
     </ul>
   </div>
