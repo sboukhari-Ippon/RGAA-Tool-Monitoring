@@ -210,13 +210,13 @@ critère: 10.7 (focus non visible)
 élément: form#declaration button.fr-btn--secondary
 sévérité: majeure               validé: experte, 21/07</code></pre>
       </div>
-      <div class="livrable"><b>Livrable</b>le fichier <code>monitoring/erreurs-reference.csv</code>, une ligne par erreur, validé par l'experte.</div>
+      <div class="livrable"><b>Livrable</b>le fichier <code>erreurs-reference.csv</code>, une ligne par erreur, validé par l'experte.</div>
     </section>
 
     <section class="step">
       <h2><span class="step-no">A3</span>Déclarer ce qu'ultraA11y couvre</h2>
       <p>Le RGAA compte 106 critères ; beaucoup ne sont pas automatisables (pertinence d'un texte, test au lecteur d'écran…). Lister noir sur blanc les critères que l'outil prétend vérifier. Une erreur manquée <em>hors</em> de cette liste n'est pas un échec, c'est une limite assumée.</p>
-      <div class="livrable"><b>Livrable</b>le fichier <code>monitoring/criteres-couverts.md</code> — c'est aussi l'argumentaire honnête de l'outil : « pré-audit couvrant X critères sur 106 ».</div>
+      <div class="livrable"><b>Livrable</b>le fichier <code>criteres-couverts.md</code> — c'est aussi l'argumentaire honnête de l'outil : « pré-audit couvrant X critères sur 106 ».</div>
     </section>
 
     <section class="step">
@@ -310,7 +310,7 @@ sévérité: majeure               validé: experte, 21/07</code></pre>
 
     <section class="step">
       <h2><span class="step-no">B5</span>Décider : garder ou annuler, et consigner</h2>
-      <p>Comparer aux chiffres de la version précédente. Amélioration → on garde. Régression → on revient à la version d'avant, l'hypothèse était fausse. Dans les deux cas, une ligne au journal (<code>monitoring/journal-iterations.csv</code>) :</p>
+      <p>Comparer aux chiffres de la version précédente. Amélioration → on garde. Régression → on revient à la version d'avant, l'hypothèse était fausse. Dans les deux cas, une ligne au journal (<code>journal-iterations.csv</code>) :</p>
       <div class="example">
         <p class="label">Exemple de journal d'itérations (fictif)</p>
         <div class="table-wrap">
@@ -346,9 +346,9 @@ sévérité: majeure               validé: experte, 21/07</code></pre>
     <ul class="check">
       <li>Skills et prompts d'ultraA11y versionnés dans git</li>
       <li>5–10 pages Egapro copiées et figées dans <code>pages-test/</code></li>
-      <li>Liste des vraies erreurs remplie et validée par l'experte (<code>monitoring/erreurs-reference.csv</code>)</li>
-      <li>Liste des critères RGAA couverts, écrite (<code>monitoring/criteres-couverts.md</code>)</li>
-      <li>Journal d'itérations créé (<code>monitoring/journal-iterations.csv</code>)</li>
+      <li>Liste des vraies erreurs remplie et validée par l'experte (<code>erreurs-reference.csv</code>)</li>
+      <li>Liste des critères RGAA couverts, écrite (<code>criteres-couverts.md</code>)</li>
+      <li>Journal d'itérations créé (<code>journal-iterations.csv</code>)</li>
       <li>Optionnel : score axe-core mesuré en point de comparaison</li>
       <li>Seuils cibles validés avec l'experte</li>
     </ul>

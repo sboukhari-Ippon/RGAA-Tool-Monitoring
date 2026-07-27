@@ -1,6 +1,6 @@
 # Suivi des pré-audits ultraA11y
 
-Documents de suivi de la démarche décrite dans [`../methodo-pre-audit-rgaa.html`](../methodo-pre-audit-rgaa.html).
+Documents de suivi de la démarche décrite dans [`methodo-pre-audit-rgaa.html`](methodo-pre-audit-rgaa.html).
 Format CSV + Markdown : versionnable dans git, comparable d'une version à l'autre, remplissable par l'IA. Les CSV s'ouvrent dans Excel, LibreOffice ou Grist.
 
 ## Les fichiers
