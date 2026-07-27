@@ -45,8 +45,13 @@ L'IA signale une erreur absente de la liste de référence, et elle semble réel
 
 ## Décision
 
-- [ ] **Gardé** — les chiffres s'améliorent
-- [ ] **Annulé** — régression, retour à la version précédente
+Deux questions, dans cet ordre :
+
+1. **L'hypothèse testée est-elle vérifiée ?** (le chiffre visé par le changement s'est-il amélioré ?)
+2. **Le reste s'est-il dégradé ?** Si les chiffres se contredisent, arbitrer dans l'ordre : hallucinations d'abord, précision ensuite, erreurs manquées enfin. Une dégradation forte sur un chiffre non visé annule le gain.
+
+- [ ] **Gardé** — hypothèse vérifiée, pas de dégradation rédhibitoire ailleurs
+- [ ] **Annulé** — hypothèse non vérifiée, ou dégradation trop forte ailleurs : retour à la version précédente
 
 Reporter la ligne dans `../journal-iterations.csv` (la colonne précision s'y calcule : vraies erreurs ÷ erreurs remontées, dans l'exemple 4 ÷ 6 = 67 %).
 

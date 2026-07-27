@@ -276,6 +276,7 @@ sévérité: majeure               validé: experte, 21/07</code></pre>
           </tr>
         </table>
       </div>
+      <div class="warnbox"><b>Cas particulier</b>L'IA signale une erreur absente de la liste de référence, et elle semble réelle : ne pas la classer seul. La noter dans la section « Désaccords » du compte rendu et la faire trancher par l'experte. Si elle confirme, la liste de référence s'enrichit — l'IA a trouvé une erreur que le contre-audit avait manquée.</div>
       <div class="livrable"><b>Livrable</b>un compte rendu par pré-audit, copié depuis <code>pre-audits/TEMPLATE-pre-audit.md</code> — les tableaux par page et par critère s'y remplissent à cette étape.</div>
     </section>
 
@@ -311,7 +312,12 @@ sévérité: majeure               validé: experte, 21/07</code></pre>
 
     <section class="step">
       <h2><span class="step-no">B5</span>Décider : garder ou annuler, et consigner</h2>
-      <p>Comparer aux chiffres de la version précédente. Amélioration → on garde. Régression → on revient à la version d'avant, l'hypothèse était fausse. Dans les deux cas, une ligne au journal (<code>journal-iterations.csv</code>) :</p>
+      <p>Comparer aux chiffres de la version précédente, en deux questions :</p>
+      <ul class="actions">
+        <li><strong>L'hypothèse testée est-elle vérifiée ?</strong> Le changement visait un chiffre précis (B1) : c'est d'abord lui qu'on regarde.</li>
+        <li><strong>Le reste s'est-il dégradé, et de combien ?</strong> Quand les chiffres se contredisent, arbitrer dans l'ordre des seuils : hallucinations d'abord, précision ensuite, erreurs manquées enfin. Une dégradation forte sur un chiffre non visé annule le gain.</li>
+      </ul>
+      <p>Puis, dans tous les cas, une ligne au journal (<code>journal-iterations.csv</code>) :</p>
       <div class="example">
         <p class="label">Exemple de journal d'itérations (fictif)</p>
         <div class="table-wrap">
@@ -323,21 +329,8 @@ sévérité: majeure               validé: experte, 21/07</code></pre>
             <tr><td class="num">v0.7</td><td>Prompt unique fusionné</td><td class="num">67 %</td><td class="num">2</td><td class="num">4</td><td class="num">8</td><td><span class="tag bad">annulé</span></td></tr>
           </table>
         </div>
+        <p>Lecture de la v0.5, le cas où les chiffres se contredisent : l'hypothèse visait les hallucinations, elles passent de 2 à 0 et la précision monte — objectif atteint. Une erreur manquée de plus (8 → 9), c'est une dégradation légère sur un chiffre moins prioritaire : on garde, et cette manquée devient l'hypothèse de la v0.6. À l'inverse, la v0.7 fait revenir les hallucinations : annulée, quel que soit le reste.</p>
       </div>
-    </section>
-  </div>
-
-  <!-- ============ SESSION EXPERTE ============ -->
-  <div>
-    <p class="part">La session hebdo avec l'experte <span class="when">1 h / semaine — à ne pas gaspiller</span></p>
-    <section class="step">
-      <p>Une fois la liste de référence en place, l'experte ne re-contre-audite <strong>pas</strong> tout à chaque itération. Agenda type :</p>
-      <ul class="actions">
-        <li><strong>20 min</strong> — arbitrer les désaccords : l'IA signale une erreur absente de la liste, qui a raison ? (Si c'est l'IA, la liste s'enrichit.)</li>
-        <li><strong>20 min</strong> — analyser une nouvelle page pour agrandir le jeu de test.</li>
-        <li><strong>10 min</strong> — revue des chiffres de la semaine et des seuils.</li>
-      </ul>
-      <div class="warnbox"><b>Bonus</b>Garder 2 à 3 pages analysées par l'experte mais <em>jamais utilisées</em> pendant le développement : y tester l'outil une fois par mois vérifie qu'il ne s'est pas sur-adapté aux pages de test habituelles.</div>
     </section>
   </div>
 
