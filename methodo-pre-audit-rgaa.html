@@ -1,0 +1,360 @@
+<title>Démarche — Évaluer ultraA11y (pré-audit RGAA par IA)</title>
+<style>
+  :root {
+    --bg: #fafbf9;
+    --surface: #ffffff;
+    --ink: #1b2430;
+    --muted: #5b6673;
+    --line: #dfe3e8;
+    --accent: #2b50c8;
+    --accent-soft: #eef1fb;
+    --ok: #1a7f4e;
+    --warn: #a05a00;
+    --bad: #bb3434;
+    --ok-soft: #e9f5ee;
+    --warn-soft: #faf1e2;
+    --bad-soft: #fbecec;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14181f; --surface: #1c222b; --ink: #e6e9ee; --muted: #98a2b0;
+      --line: #313a46; --accent: #8ba3f2; --accent-soft: #232c44;
+      --ok: #5cc593; --warn: #e0a35c; --bad: #e58585;
+      --ok-soft: #1d2f27; --warn-soft: #33291a; --bad-soft: #362122;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #fafbf9; --surface: #ffffff; --ink: #1b2430; --muted: #5b6673;
+    --line: #dfe3e8; --accent: #2b50c8; --accent-soft: #eef1fb;
+    --ok: #1a7f4e; --warn: #a05a00; --bad: #bb3434;
+    --ok-soft: #e9f5ee; --warn-soft: #faf1e2; --bad-soft: #fbecec;
+  }
+  :root[data-theme="dark"] {
+    --bg: #14181f; --surface: #1c222b; --ink: #e6e9ee; --muted: #98a2b0;
+    --line: #313a46; --accent: #8ba3f2; --accent-soft: #232c44;
+    --ok: #5cc593; --warn: #e0a35c; --bad: #e58585;
+    --ok-soft: #1d2f27; --warn-soft: #33291a; --bad-soft: #362122;
+  }
+
+  body {
+    background: var(--bg); color: var(--ink);
+    font: 16px/1.6 "Segoe UI", system-ui, -apple-system, sans-serif;
+    margin: 0; padding: 3rem 1.25rem 5rem;
+  }
+  main { max-width: 47rem; margin: 0 auto; display: flex; flex-direction: column; gap: 3rem; }
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .eyebrow {
+    font-size: .75rem; font-weight: 600; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 .5rem;
+  }
+  h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 .75rem; text-wrap: balance; letter-spacing: -.01em; }
+  header p { color: var(--muted); margin: 0; max-width: 42rem; }
+  header p strong { color: var(--ink); }
+
+  .part {
+    font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: .4rem;
+    margin: 0 0 1.5rem; display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  }
+  .part .when { color: var(--muted); font-weight: 600; letter-spacing: .05em; text-transform: none; font-size: .8rem; }
+
+  h2 { font-size: 1.15rem; margin: 0 0 .6rem; display: flex; align-items: baseline; gap: .65rem; text-wrap: balance; }
+  .step-no {
+    font: 700 .8rem/1.7 var(--mono); color: var(--accent);
+    background: var(--accent-soft); border-radius: 4px;
+    padding: 0 .5rem; flex: none;
+  }
+  section.step { margin-bottom: 2.25rem; }
+  section.step:last-child { margin-bottom: 0; }
+  section.step > p { margin: 0 0 .9rem; }
+  section.step > p:last-child { margin-bottom: 0; }
+
+  .livrable {
+    display: flex; gap: .6rem; align-items: baseline;
+    background: var(--ok-soft); border-radius: 6px; padding: .65rem .9rem;
+    font-size: .9rem; margin-top: .9rem;
+  }
+  .livrable b { color: var(--ok); flex: none; font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; }
+
+  /* Vue d'ensemble */
+  .overview { display: flex; flex-direction: column; gap: .75rem; }
+  .flow {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+    padding: 1rem 1.2rem;
+  }
+  .flow .flow-title { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 .7rem; }
+  .flow .flow-title b { color: var(--accent); }
+  .chain { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+  .chain .node {
+    background: var(--accent-soft); color: var(--ink); border-radius: 6px;
+    padding: .45rem .8rem; font-size: .85rem; font-weight: 600;
+  }
+  .chain .node small { display: block; font-weight: 400; color: var(--muted); font-size: .75rem; }
+  .chain .arr { color: var(--muted); font-family: var(--mono); flex: none; }
+
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th, td { text-align: left; padding: .6rem .85rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  th { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+  td.num { font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: .85rem; white-space: nowrap; }
+
+  .tag { display: inline-block; font-size: .72rem; font-weight: 600; border-radius: 999px; padding: .1rem .6rem; white-space: nowrap; }
+  .tag.ok   { color: var(--ok);   background: var(--ok-soft); }
+  .tag.warn { color: var(--warn); background: var(--warn-soft); }
+  .tag.bad  { color: var(--bad);  background: var(--bad-soft); }
+
+  pre {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 6px;
+    padding: 1rem 1.1rem; overflow-x: auto; font: .82rem/1.55 var(--mono); margin: 0;
+  }
+  code { font-family: var(--mono); font-size: .88em; background: var(--accent-soft); padding: .05em .35em; border-radius: 4px; }
+  pre code { background: none; padding: 0; }
+
+  .example {
+    border-left: 3px solid var(--accent); background: var(--surface);
+    border-radius: 0 6px 6px 0; padding: 1rem 1.2rem; margin: .9rem 0 0;
+  }
+  .example .label { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin: 0 0 .5rem; }
+  .example p { margin: 0 0 .5rem; }
+  .example p:last-child, .example ul:last-child, .example .table-wrap:last-child, .example pre:last-child { margin-bottom: 0; }
+  .example ul { margin: .3rem 0 0; padding-left: 1.2rem; }
+  .example li { margin: .2rem 0; font-size: .92rem; }
+
+  ul.actions { margin: 0 0 .9rem; padding-left: 1.25rem; }
+  ul.actions li { margin: .35rem 0; }
+  ul.actions li::marker { color: var(--accent); }
+
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: .75rem; margin-top: .9rem; }
+  .kpi {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 6px;
+    padding: .8rem 1rem;
+  }
+  .kpi .v { font: 700 1.5rem/1.2 var(--mono); font-variant-numeric: tabular-nums; }
+  .kpi .l { font-size: .78rem; color: var(--muted); }
+  .kpi .f { font-size: .72rem; color: var(--muted); font-family: var(--mono); margin-top: .2rem; }
+
+  .warnbox {
+    background: var(--warn-soft); border-radius: 6px; padding: .65rem .9rem;
+    font-size: .9rem; margin-top: .9rem;
+  }
+  .warnbox b { color: var(--warn); font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; margin-right: .5rem; }
+
+  ul.check { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .4rem; }
+  ul.check li {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 6px;
+    padding: .55rem .9rem .55rem 2.3rem; position: relative; font-size: .92rem;
+  }
+  ul.check li::before {
+    content: ""; position: absolute; left: .8rem; top: .85rem;
+    width: .8rem; height: .8rem; border: 2px solid var(--accent); border-radius: 3px;
+  }
+
+  footer { color: var(--muted); font-size: .85rem; border-top: 1px solid var(--line); padding-top: 1.25rem; }
+</style>
+
+<main>
+  <header>
+    <p class="eyebrow">Démarche · ultraA11y × Egapro</p>
+    <h1>Évaluer et améliorer un pré-audit RGAA par IA</h1>
+    <p>Le problème aujourd'hui : ultraA11y est corrigé « au feeling », sans savoir si chaque modification améliore ou dégrade l'outil. La démarche : <strong>transformer le contre-audit de l'experte en liste de référence des erreurs</strong>, puis mesurer l'outil contre cette liste à chaque modification. Mise en place une fois (partie A), boucle répétée ensuite (partie B).</p>
+  </header>
+
+  <!-- ============ VUE D'ENSEMBLE ============ -->
+  <section class="overview" aria-label="Vue d'ensemble">
+    <div class="flow">
+      <p class="flow-title"><b>A · Mise en place</b> — une seule fois, avec l'experte</p>
+      <div class="chain">
+        <span class="node">Figer les pages de test<small>copies HTML de pages Egapro</small></span>
+        <span class="arr">→</span>
+        <span class="node">Liste des vraies erreurs<small>établie et validée par l'experte</small></span>
+        <span class="arr">→</span>
+        <span class="node">Périmètre couvert<small>les critères RGAA que l'outil vérifie</small></span>
+      </div>
+    </div>
+    <div class="flow">
+      <p class="flow-title"><b>B · La boucle</b> — à chaque modification de l'outil (~1 h)</p>
+      <div class="chain">
+        <span class="node">1 modif<small>taguée dans git</small></span>
+        <span class="arr">→</span>
+        <span class="node">Lancer l'outil sur les pages de test<small>deux fois, pour vérifier la stabilité</small></span>
+        <span class="arr">→</span>
+        <span class="node">Comparer à la liste des erreurs<small>chiffres calculés automatiquement</small></span>
+        <span class="arr">→</span>
+        <span class="node">Garder ou annuler<small>une ligne au journal</small></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PARTIE A ============ -->
+  <div>
+    <p class="part">Partie A — Mise en place <span class="when">une seule fois, ~2 sessions avec l'experte</span></p>
+
+    <section class="step">
+      <h2><span class="step-no">A1</span>Figer les pages de test</h2>
+      <p>Choisir 5 à 10 pages d'Egapro représentatives (formulaire, tableau de résultats, page de contenu…) et <strong>sauvegarder leur HTML tel quel</strong> dans un dossier versionné. On évaluera toujours sur ces copies, jamais sur le site en ligne.</p>
+      <div class="warnbox"><b>Pourquoi</b>L'équipe Egapro corrige ses pages en continu. Si le terrain de test bouge, impossible de savoir si c'est l'outil ou la cible qui a changé.</div>
+      <div class="livrable"><b>Livrable</b>un dossier <code>pages-test/2026-07/</code> avec les copies HTML, commité.</div>
+    </section>
+
+    <section class="step">
+      <h2><span class="step-no">A2</span>Établir la liste des vraies erreurs avec l'experte</h2>
+      <p>Pour chaque page de test, l'experte liste <strong>toutes</strong> les non-conformités. Chaque entrée tient sur une ligne : critère RGAA, élément localisable, sévérité. Cette liste devient la référence : chaque passage de l'outil sera comparé à elle.</p>
+      <div class="example">
+        <p class="label">Exemple — une ligne de la liste</p>
+        <pre><code>page: declaration/index        copie du: 2026-07
+critère: 10.7 (focus non visible)
+élément: form#declaration button.fr-btn--secondary
+sévérité: majeure               validé: experte, 21/07</code></pre>
+      </div>
+      <div class="livrable"><b>Livrable</b>le fichier <code>monitoring/erreurs-reference.csv</code>, une ligne par erreur, validé par l'experte.</div>
+    </section>
+
+    <section class="step">
+      <h2><span class="step-no">A3</span>Déclarer ce qu'ultraA11y couvre</h2>
+      <p>Le RGAA compte 106 critères ; beaucoup ne sont pas automatisables (pertinence d'un texte, test au lecteur d'écran…). Lister noir sur blanc les critères que l'outil prétend vérifier. Une erreur manquée <em>hors</em> de cette liste n'est pas un échec, c'est une limite assumée.</p>
+      <div class="livrable"><b>Livrable</b>le fichier <code>monitoring/criteres-couverts.md</code> — c'est aussi l'argumentaire honnête de l'outil : « pré-audit couvrant X critères sur 106 ».</div>
+    </section>
+
+    <section class="step">
+      <h2><span class="step-no">A4</span>Optionnel — un point de comparaison avec axe-core</h2>
+      <p>Étape facultative, à faire seulement si la mise en place est simple : la référence de la démarche reste la liste de l'experte, pas axe-core.</p>
+      <p>L'idée : lancer <a href="https://github.com/dequelabs/axe-core">axe-core</a> (outil gratuit, aux résultats toujours identiques) sur les pages de test et noter son score contre la liste des erreurs. Il est construit sur les WCAG, mais ses règles portent la correspondance officielle avec le RGAA 4 (le RGAA est la déclinaison française des WCAG 2.1) : chaque erreur sort étiquetée du critère RGAA correspondant, par exemple <code>color-contrast</code> → critère 3.2. Intérêt : si l'IA fait moins bien qu'un outil classique gratuit sur les critères qu'il sait vérifier, ça interroge l'architecture. Mais la boucle de la partie B fonctionne très bien sans.</p>
+    </section>
+  </div>
+
+  <!-- ============ PARTIE B ============ -->
+  <div>
+    <p class="part">Partie B — La boucle <span class="when">à chaque modification de l'outil</span></p>
+
+    <section class="step">
+      <h2><span class="step-no">B1</span>Une modification, taguée</h2>
+      <ul class="actions">
+        <li>Skills, prompts et config sont dans git : chaque état de l'outil a un numéro de version.</li>
+        <li><strong>Une seule modification à la fois</strong>, motivée par une hypothèse (« les hallucinations viennent de l'absence de citation du HTML »).</li>
+      </ul>
+      <div class="warnbox"><b>Règle d'or</b>Deux changements en même temps = impossible d'attribuer le gain ou la régression. C'est la fin du « j'ai corrigé mais je ne sais pas quoi ».</div>
+    </section>
+
+    <section class="step">
+      <h2><span class="step-no">B2</span>Lancer l'outil sur les pages de test</h2>
+      <p>Lancer ultraA11y sur les copies figées (jamais le site en ligne), deux à trois fois. Si deux passages identiques donnent des résultats très différents, l'outil est instable : c'est le premier problème à régler, avant la précision.</p>
+    </section>
+
+    <section class="step">
+      <h2><span class="step-no">B3</span>Classer chaque signalement</h2>
+      <p>Comparer les erreurs remontées à la liste de référence. Chaque signalement tombe dans une des quatre cases — et chaque case a sa propre correction :</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Cas</th><th>C'est quoi</th><th>Exemple</th><th>Comment corriger</th></tr>
+          <tr>
+            <td><span class="tag ok">Erreur confirmée</span></td>
+            <td>Erreur réelle, bien détectée</td>
+            <td>Contraste insuffisant confirmé (crit. 3.2)</td>
+            <td>Rien : c'est le but</td>
+          </tr>
+          <tr>
+            <td><span class="tag bad">Hallucination</span></td>
+            <td>L'élément signalé n'existe pas dans la page</td>
+            <td>« Image sans alternative » sur une image absente de la page</td>
+            <td>Obliger l'outil à citer le code HTML fautif — vérifiable par script : si le code cité n'existe pas, le signalement est rejeté</td>
+          </tr>
+          <tr>
+            <td><span class="tag warn">Fausse alerte</span></td>
+            <td>L'élément existe mais est conforme</td>
+            <td>Alt vide signalé sur une image décorative (conforme)</td>
+            <td>Préciser les règles d'interprétation du critère dans le skill</td>
+          </tr>
+          <tr>
+            <td><span class="tag bad">Erreur manquée</span></td>
+            <td>Erreur de la liste non détectée (dans le périmètre couvert)</td>
+            <td>Focus non visible (crit. 10.7) manqué</td>
+            <td>Checklist par critère, découper l'analyse en plusieurs passes</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="step">
+      <h2><span class="step-no">B4</span>Relever les chiffres</h2>
+      <p>Par page, quatre chiffres simples. Les nombres bruts se comparent d'une version à l'autre parce que les pages de test sont figées (A1).</p>
+      <ul class="actions">
+        <li><strong>Précision</strong> : % d'erreurs réelles parmi les erreurs remontées.</li>
+        <li><strong>Hallucinations</strong> : nombre d'erreurs portant sur des éléments qui n'existent pas.</li>
+        <li><strong>Fausses alertes</strong> : nombre d'erreurs remontées qui n'en sont pas.</li>
+        <li><strong>Erreurs manquées</strong> : nombre d'erreurs de la liste de l'experte que l'IA n'a pas vues. Indispensable : sans lui, un outil qui ne remonte presque rien paraîtrait parfait.</li>
+      </ul>
+      <p>Et sur l'ensemble des pages : les mêmes chiffres <strong>ventilés par critère RGAA</strong>, pour voir sur quels critères l'outil se trompe.</p>
+      <div class="example">
+        <p class="label">Exemple chiffré (fictif) — la liste de référence compte 20 erreurs, l'IA en signale 18</p>
+        <p>12 confirmées, 4 fausses alertes, 2 hallucinations ; 8 erreurs de la liste n'ont pas été vues :</p>
+        <div class="kpi-row">
+          <div class="kpi"><div class="v">67 %</div><div class="l">Précision</div><div class="f">12 / 18</div></div>
+          <div class="kpi"><div class="v">2</div><div class="l">Hallucinations</div><div class="f">nombre brut</div></div>
+          <div class="kpi"><div class="v">4</div><div class="l">Fausses alertes</div><div class="f">nombre brut</div></div>
+          <div class="kpi"><div class="v">8</div><div class="l">Erreurs manquées</div><div class="f">20 − 12</div></div>
+        </div>
+      </div>
+      <div class="example">
+        <p class="label">Seuils à viser (à valider avec l'experte)</p>
+        <ul>
+          <li>Hallucinations : <strong>zéro</strong> — chaque hallucination détruit la confiance des équipes.</li>
+          <li>Précision <strong>&gt; 80 %</strong> sur les critères couverts.</li>
+          <li>Erreurs manquées : <strong>en baisse à chaque version</strong> — toujours mesurées contre la liste validée par l'experte.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="step">
+      <h2><span class="step-no">B5</span>Décider : garder ou annuler, et consigner</h2>
+      <p>Comparer aux chiffres de la version précédente. Amélioration → on garde. Régression → on revient à la version d'avant, l'hypothèse était fausse. Dans les deux cas, une ligne au journal (<code>monitoring/journal-iterations.csv</code>) :</p>
+      <div class="example">
+        <p class="label">Exemple de journal d'itérations (fictif)</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Version</th><th>Changement</th><th>Précision</th><th>Halluc.</th><th>Fausses alertes</th><th>Manquées</th><th>Décision</th></tr>
+            <tr><td class="num">v0.4</td><td>—</td><td class="num">67 %</td><td class="num">2</td><td class="num">4</td><td class="num">8</td><td>point de départ</td></tr>
+            <tr><td class="num">v0.5</td><td>Citation HTML obligatoire</td><td class="num">79 %</td><td class="num">0</td><td class="num">3</td><td class="num">9</td><td><span class="tag ok">gardé</span></td></tr>
+            <tr><td class="num">v0.6</td><td>Skill dédié critères 10.x</td><td class="num">82 %</td><td class="num">0</td><td class="num">3</td><td class="num">6</td><td><span class="tag ok">gardé</span></td></tr>
+            <tr><td class="num">v0.7</td><td>Prompt unique fusionné</td><td class="num">67 %</td><td class="num">2</td><td class="num">4</td><td class="num">8</td><td><span class="tag bad">annulé</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ SESSION EXPERTE ============ -->
+  <div>
+    <p class="part">La session hebdo avec l'experte <span class="when">1 h / semaine — à ne pas gaspiller</span></p>
+    <section class="step">
+      <p>Une fois la liste de référence en place, l'experte ne re-contre-audite <strong>pas</strong> tout à chaque itération. Agenda type :</p>
+      <ul class="actions">
+        <li><strong>20 min</strong> — arbitrer les désaccords : l'IA signale une erreur absente de la liste, qui a raison ? (Si c'est l'IA, la liste s'enrichit.)</li>
+        <li><strong>20 min</strong> — analyser une nouvelle page pour agrandir le jeu de test.</li>
+        <li><strong>10 min</strong> — revue des chiffres de la semaine et des seuils.</li>
+      </ul>
+      <div class="warnbox"><b>Bonus</b>Garder 2 à 3 pages analysées par l'experte mais <em>jamais utilisées</em> pendant le développement : y tester l'outil une fois par mois vérifie qu'il ne s'est pas sur-adapté aux pages de test habituelles.</div>
+    </section>
+  </div>
+
+  <!-- ============ CHECKLIST ============ -->
+  <div>
+    <p class="part">Checklist de démarrage</p>
+    <ul class="check">
+      <li>Skills et prompts d'ultraA11y versionnés dans git</li>
+      <li>5–10 pages Egapro copiées et figées dans <code>pages-test/</code></li>
+      <li>Liste des vraies erreurs remplie et validée par l'experte (<code>monitoring/erreurs-reference.csv</code>)</li>
+      <li>Liste des critères RGAA couverts, écrite (<code>monitoring/criteres-couverts.md</code>)</li>
+      <li>Journal d'itérations créé (<code>monitoring/journal-iterations.csv</code>)</li>
+      <li>Optionnel : score axe-core mesuré en point de comparaison</li>
+      <li>Seuils cibles validés avec l'experte</li>
+    </ul>
+  </div>
+
+  <footer>
+    <p>Démarche d'évaluation ultraA11y — beta-test sur Egapro. RGAA 4.1 : 106 critères, 13 thématiques. Les chiffres des exemples sont fictifs. Mission transfo IA, ministères sociaux.</p>
+  </footer>
+</main>

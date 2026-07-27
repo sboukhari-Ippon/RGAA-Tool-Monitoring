@@ -1,0 +1,2 @@
+page;date_copie;critere_rgaa;description;element;severite;valide_par;date_validation;commentaire
+EXEMPLE-declaration/index;2026-07;10.7;Prise de focus non visible au clavier;form#declaration button.fr-btn--secondary;majeure;Experte RGAA;2026-07-21;Ligne d'exemple, à supprimer

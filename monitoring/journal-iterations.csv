@@ -1,0 +1,2 @@
+version,date,changement,hypothese,precision_pct,hallucinations,fausses_alertes,erreurs_manquees,decision,commentaire,
+EXEMPLE-v0.5,2026-07-28,Citation HTML obligatoire dans chaque signalement,Les hallucinations viennent de l'absence d'ancrage dans le code,79,2,3,9,garde,Ligne d'exemple, à supprimer
