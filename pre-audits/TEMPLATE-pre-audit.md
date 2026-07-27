@@ -29,10 +29,10 @@ Vérification : Erreurs remontées = Vraies erreurs + Fausses alertes + Hallucin
 
 Uniquement les critères où l'IA s'est trompée (fausse alerte, hallucination ou erreur manquée).
 
-| Critère | Vraies erreurs | Fausses alertes | Hallucinations | Manquées |
-|---|---|---|---|---|
-| *(exemple)* 10.7 — prise de focus visible | 1 | 0 | 0 | 2 |
-| | | | | |
+| Critère | Erreurs remontées | Vraies erreurs | Fausses alertes | Hallucinations | Manquées |
+|---|---|---|---|---|---|
+| *(exemple)* 10.7 — prise de focus visible | 1 | 1 | 0 | 0 | 2 |
+| | | | | | |
 
 ## Désaccords à arbitrer avec l'experte
 
