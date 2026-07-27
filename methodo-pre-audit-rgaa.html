@@ -251,7 +251,7 @@ sévérité: majeure               validé: experte, 21/07</code></pre>
         <table>
           <tr><th>Cas</th><th>C'est quoi</th><th>Exemple</th><th>Comment corriger</th></tr>
           <tr>
-            <td><span class="tag ok">Erreur confirmée</span></td>
+            <td><span class="tag ok">Vraie erreur</span></td>
             <td>Erreur réelle, bien détectée</td>
             <td>Contraste insuffisant confirmé (crit. 3.2)</td>
             <td>Rien : c'est le but</td>
@@ -276,21 +276,22 @@ sévérité: majeure               validé: experte, 21/07</code></pre>
           </tr>
         </table>
       </div>
+      <div class="livrable"><b>Livrable</b>un compte rendu par pré-audit, copié depuis <code>pre-audits/TEMPLATE-pre-audit.md</code> — les tableaux par page et par critère s'y remplissent à cette étape.</div>
     </section>
 
     <section class="step">
       <h2><span class="step-no">B4</span>Relever les chiffres</h2>
-      <p>Par page, quatre chiffres simples. Les nombres bruts se comparent d'une version à l'autre parce que les pages de test sont figées (A1).</p>
+      <p>Par page, trois nombres bruts, comparables d'une version à l'autre parce que les pages de test sont figées (A1) :</p>
       <ul class="actions">
-        <li><strong>Précision</strong> : % d'erreurs réelles parmi les erreurs remontées.</li>
         <li><strong>Hallucinations</strong> : nombre d'erreurs portant sur des éléments qui n'existent pas.</li>
         <li><strong>Fausses alertes</strong> : nombre d'erreurs remontées qui n'en sont pas.</li>
         <li><strong>Erreurs manquées</strong> : nombre d'erreurs de la liste de l'experte que l'IA n'a pas vues. Indispensable : sans lui, un outil qui ne remonte presque rien paraîtrait parfait.</li>
       </ul>
+      <p>Au total du pré-audit, un chiffre calculé pour le journal : la <strong>précision</strong> = vraies erreurs ÷ erreurs remontées.</p>
       <p>Et sur l'ensemble des pages : les mêmes chiffres <strong>ventilés par critère RGAA</strong>, pour voir sur quels critères l'outil se trompe.</p>
       <div class="example">
         <p class="label">Exemple chiffré (fictif) — la liste de référence compte 20 erreurs, l'IA en signale 18</p>
-        <p>12 confirmées, 4 fausses alertes, 2 hallucinations ; 8 erreurs de la liste n'ont pas été vues :</p>
+        <p>12 vraies erreurs, 4 fausses alertes, 2 hallucinations ; 8 erreurs de la liste n'ont pas été vues :</p>
         <div class="kpi-row">
           <div class="kpi"><div class="v">67 %</div><div class="l">Précision</div><div class="f">12 / 18</div></div>
           <div class="kpi"><div class="v">2</div><div class="l">Hallucinations</div><div class="f">nombre brut</div></div>
